@@ -26,7 +26,7 @@ def traverse_tree(output, name):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        name = sys.argv[1]
+        root = sys.argv[1]
     else:
-        name = "."
-    visualise_tree('folder-tree.puml', name)
+        root = "."
+    visualise_tree('folder-tree.puml', root)
