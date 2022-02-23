@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Traverse a directory tree and create an PlantUML source file to visualize it
 import sys
 import os
