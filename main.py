@@ -22,7 +22,7 @@ def traverse_tree(output, name):
     for dirpath, dirnames, filenames in os.walk(name):
         output.write(f'folder {canonical_name(dirpath)} as "{os.path.basename(dirpath)}"\n')
         if len(os.path.dirname(dirpath)) > 0:
-            output.write(f'{canonical_name(os.path.dirname(dirpath))} --- {canonical_name(dirpath)}\n')
+            output.write(f'{canonical_name(os.path.dirname(dirpath))} -- {canonical_name(dirpath)}\n')
 
 
 if __name__ == '__main__':
