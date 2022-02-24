@@ -26,7 +26,7 @@ def traverse_tree(output, args):
         cur_depth = dir_path.count(os.path.sep)
         if 0 <= args.max_depth <= cur_depth:
             del dir_names[:]
-        for dir in args.ignored_dir:
+        for dir in args.ignored_dirs:
             if dir in dir_names:
                 dir_names.remove(dir)
 
@@ -35,14 +35,14 @@ def main():
     parser = argparse.ArgumentParser(description='Traverse a directory tree and create an PlantUML source file '
                                                  'to visualize it graphically')
     parser.add_argument('root', default='.', nargs='?',
-                        help='root directory of tree traversal (default .)')
+                        help='root directory of tree traversal (default ".")')
     parser.add_argument('-s', '--symbolic-links', dest='followlinks', action='store_true',
                         help='follow symbolic links')
-    parser.add_argument('-m', '--max-depth', dest='max_depth', default=-1, type=int,
+    parser.add_argument('-m', '--max-depth', dest='max_depth', metavar='depth', default=-1, type=int,
                         help='maximal tree depth to traverse')
-    parser.add_argument('-i', '--ignore', dest='ignored_dir', action='append', default=[],
+    parser.add_argument('-i', '--ignore', dest='ignored_dirs', metavar='dir', action='append', default=[],
                         help='directory to ignore in traversal (may be specified more than once)')
-    parser.add_argument('-o', '--output', dest='output', default='folder-tree.puml',
+    parser.add_argument('-o', '--output', dest='output', default='folder-tree.puml', metavar='filename',
                         help='name of output file (default folder-tree.puml)')
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     args = parser.parse_args()
