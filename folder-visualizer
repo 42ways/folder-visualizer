@@ -35,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(description='Traverse a directory tree and create an PlantUML source file '
                                                  'to visualize it graphically')
     parser.add_argument('root', default='.', nargs='?',
-                        help='root directory of tree traversal')
+                        help='root directory of tree traversal (default .)')
     parser.add_argument('-s', '--symbolic-links', dest='followlinks', action='store_true',
                         help='follow symbolic links')
     parser.add_argument('-m', '--max-depth', dest='max_depth', default=-1, type=int,
@@ -43,7 +43,7 @@ def main():
     parser.add_argument('-i', '--ignore', dest='ignored_dir', action='append', default=[],
                         help='directory to ignore in traversal (may be specified more than once)')
     parser.add_argument('-o', '--output', dest='output', default='folder-tree.puml',
-                        help='name of output file')
+                        help='name of output file (default folder-tree.puml)')
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     args = parser.parse_args()
     visualise_tree(args)
