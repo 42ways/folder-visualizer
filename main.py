@@ -3,11 +3,11 @@ import argparse
 import os
 
 
-def visualise_tree(filename, name):
-    with open(filename, 'w') as output:
+def visualise_tree(args):
+    with open(args.output, 'w') as output:
         try:
             output.writelines('@startuml\n')
-            traverse_tree(output, name)
+            traverse_tree(output, args)
             output.write('@enduml\n')
         finally:
             output.close()
@@ -17,12 +17,12 @@ def canonical_name(name):
     return name.replace("/", "_").replace("-", "_").replace("@", "_")
 
 
-def traverse_tree(output, name):
-    for dirpath, dirnames, filenames in os.walk(name):
-        output.write(f'folder {canonical_name(dirpath)} as "{os.path.basename(dirpath)}"\n')
-        parentpath=os.path.dirname(dirpath)
-        if len(parentpath) > 0:
-            output.write(f'{canonical_name(parentpath)} -- {canonical_name(dirpath)}\n')
+def traverse_tree(output, args):
+    for dir_path, dir_names, filenames in os.walk(args.root, followlinks=args.followlinks):
+        output.write(f'folder {canonical_name(dir_path)} as "{os.path.basename(dir_path)}"\n')
+        parent_path = os.path.dirname(dir_path)
+        if len(parent_path) > 0:
+            output.write(f'{canonical_name(parent_path)} -- {canonical_name(dir_path)}\n')
 
 
 def main():
@@ -30,10 +30,12 @@ def main():
                                                  'to visualize it graphically')
     parser.add_argument('-o', dest='output', default='folder-tree.puml',
                         help='name of output file')
+    parser.add_argument('--follow-links', dest='followlinks', action='store_true',
+                        help='follow symbolic links')
     parser.add_argument('root', default='.', nargs='?',
                         help='root directory of tree traversal')
     args = parser.parse_args()
-    visualise_tree(args.output, args.root)
+    visualise_tree(args)
 
 
 if __name__ == '__main__':
