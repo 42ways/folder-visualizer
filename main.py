@@ -18,11 +18,14 @@ def canonical_name(name):
 
 
 def traverse_tree(output, args):
-    for dir_path, dir_names, filenames in os.walk(args.root, followlinks=args.followlinks):
+    for dir_path, dir_names, filenames in os.walk(args.root.rstrip(os.path.sep), followlinks=args.followlinks):
         output.write(f'folder {canonical_name(dir_path)} as "{os.path.basename(dir_path)}"\n')
         parent_path = os.path.dirname(dir_path)
         if len(parent_path) > 0:
             output.write(f'{canonical_name(parent_path)} -- {canonical_name(dir_path)}\n')
+        cur_depth = dir_path.count(os.path.sep)
+        if 0 <= args.max_depth <= cur_depth:
+            del dir_names[:]
 
 
 def main():
@@ -32,6 +35,8 @@ def main():
                         help='root directory of tree traversal')
     parser.add_argument('--follow-links', dest='followlinks', action='store_true',
                         help='follow symbolic links')
+    parser.add_argument('--max-depth', dest='max_depth', default=-1, type=int,
+                        help='maximal tree depth to traverse')
     parser.add_argument('-o', dest='output', default='folder-tree.puml',
                         help='name of output file')
     args = parser.parse_args()
