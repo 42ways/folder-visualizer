@@ -26,6 +26,9 @@ def traverse_tree(output, args):
         cur_depth = dir_path.count(os.path.sep)
         if 0 <= args.max_depth <= cur_depth:
             del dir_names[:]
+        for dir in args.ignored_dir:
+            if dir in dir_names:
+                dir_names.remove(dir)
 
 
 def main():
@@ -35,10 +38,13 @@ def main():
                         help='root directory of tree traversal')
     parser.add_argument('-s', '--symbolic-links', dest='followlinks', action='store_true',
                         help='follow symbolic links')
-    parser.add_argument('-d', '--depth', dest='max_depth', default=-1, type=int,
+    parser.add_argument('-m', '--max-depth', dest='max_depth', default=-1, type=int,
                         help='maximal tree depth to traverse')
+    parser.add_argument('-i', '--ignore', dest='ignored_dir', action='append', default=[],
+                        help='directory to ignore in traversal (may be specified more than once)')
     parser.add_argument('-o', '--output', dest='output', default='folder-tree.puml',
                         help='name of output file')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     args = parser.parse_args()
     visualise_tree(args)
 
