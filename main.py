@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# Traverse a directory tree and create an PlantUML source file to visualize it
-import sys
+import argparse
 import os
 
 
@@ -25,9 +24,16 @@ def traverse_tree(output, name):
             output.write(f'{canonical_name(os.path.dirname(dirpath))} -- {canonical_name(dirpath)}\n')
 
 
+def main():
+    parser = argparse.ArgumentParser(description='Traverse a directory tree and create an PlantUML source file '
+                                                 'to visualize it graphically')
+    parser.add_argument('-o', dest='output', default='folder-tree.puml',
+                        help='name of output file')
+    parser.add_argument('root', default='.', nargs='?',
+                        help='root directory of tree traversal')
+    args = parser.parse_args()
+    visualise_tree(args.output, args.root)
+
+
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        root = sys.argv[1].rstrip('/')
-    else:
-        root = "."
-    visualise_tree('folder-tree.puml', root)
+    main()
