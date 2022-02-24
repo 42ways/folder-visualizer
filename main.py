@@ -33,11 +33,11 @@ def main():
                                                  'to visualize it graphically')
     parser.add_argument('root', default='.', nargs='?',
                         help='root directory of tree traversal')
-    parser.add_argument('--follow-links', dest='followlinks', action='store_true',
+    parser.add_argument('-s', '--symbolic-links', dest='followlinks', action='store_true',
                         help='follow symbolic links')
-    parser.add_argument('--max-depth', dest='max_depth', default=-1, type=int,
+    parser.add_argument('-d', '--depth', dest='max_depth', default=-1, type=int,
                         help='maximal tree depth to traverse')
-    parser.add_argument('-o', dest='output', default='folder-tree.puml',
+    parser.add_argument('-o', '--output', dest='output', default='folder-tree.puml',
                         help='name of output file')
     args = parser.parse_args()
     visualise_tree(args)
