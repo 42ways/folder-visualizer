@@ -28,12 +28,12 @@ def traverse_tree(output, args):
 def main():
     parser = argparse.ArgumentParser(description='Traverse a directory tree and create an PlantUML source file '
                                                  'to visualize it graphically')
-    parser.add_argument('-o', dest='output', default='folder-tree.puml',
-                        help='name of output file')
-    parser.add_argument('--follow-links', dest='followlinks', action='store_true',
-                        help='follow symbolic links')
     parser.add_argument('root', default='.', nargs='?',
                         help='root directory of tree traversal')
+    parser.add_argument('--follow-links', dest='followlinks', action='store_true',
+                        help='follow symbolic links')
+    parser.add_argument('-o', dest='output', default='folder-tree.puml',
+                        help='name of output file')
     args = parser.parse_args()
     visualise_tree(args)
 
