@@ -14,7 +14,7 @@ def visualise_tree(filename, name):
 
 
 def canonical_name(name):
-    return name.replace("/", "_").replace("-", "_")
+    return name.replace("/", "_").replace("-", "_").replace("@", "_")
 
 
 def traverse_tree(output, name):
