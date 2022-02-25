@@ -21,6 +21,8 @@ def canonical_name(name):
 def sizeof_fmt(num, binary=True):
     factor = 1024.0 if binary else 1000.0
     suffix = 'iB' if binary else 'B'
+    if abs(num) < factor:
+        return f'{num:3.1f} bytes'
     for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
         if abs(num) < factor:
             return f'{num:3.1f} {unit}{suffix}'
