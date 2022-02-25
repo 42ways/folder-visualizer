@@ -14,12 +14,29 @@ def visualise_tree(args):
 
 
 def canonical_name(name):
-    return name.replace("/", "_").replace("-", "_").replace("@", "_")
+    return name.replace('/', '_').replace('-', '_').replace('@', '_')
+
+
+# adapted from https://stackoverflow.com/a/1094933
+def sizeof_fmt(num, binary=True):
+    factor = 1024.0 if binary else 1000.0
+    suffix = 'iB' if binary else 'B'
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        if abs(num) < factor:
+            return f'{num:3.1f} {unit}{suffix}'
+        num /= factor
+    return f'{num:.1f} Y{suffix}'
 
 
 def traverse_tree(output, args):
     for dir_path, dir_names, filenames in os.walk(args.root.rstrip(os.path.sep), followlinks=args.followlinks):
-        output.write(f'folder {canonical_name(dir_path)} as "{os.path.basename(dir_path)}"\n')
+        output.write(f'folder {canonical_name(dir_path)} [\n<b>{os.path.basename(dir_path)}</b>\n')
+        if args.count:
+            output.write(f'{len(filenames)} files\n')
+        if args.size_unit:
+            size = sum(os.path.getsize(dir_path + os.path.sep + f) for f in filenames)
+            output.write(f'{sizeof_fmt(size, args.size_unit == "B")}\n')
+        output.write(f']\n')
         parent_path = os.path.dirname(dir_path)
         if len(parent_path) > 0:
             output.write(f'{canonical_name(parent_path)} -- {canonical_name(dir_path)}\n')
@@ -36,12 +53,16 @@ def main():
                                                  'to visualize it graphically')
     parser.add_argument('root', default='.', nargs='?',
                         help='root directory of tree traversal (default ".")')
-    parser.add_argument('-s', '--symbolic-links', dest='followlinks', action='store_true',
+    parser.add_argument('-f', '--follow-symlinks', dest='followlinks', action='store_true',
                         help='follow symbolic links')
     parser.add_argument('-m', '--max-depth', dest='max_depth', metavar='depth', default=-1, type=int,
                         help='maximal tree depth to traverse')
     parser.add_argument('-i', '--ignore', dest='ignored_dirs', metavar='dir', action='append', default=[],
                         help='directory to ignore in traversal (may be specified more than once)')
+    parser.add_argument('-c', '--count', dest='count', action='store_true',
+                        help='include number of files per folder')
+    parser.add_argument('-s', '--size', dest='size_unit', metavar='unit', nargs='?', const='B', choices=['B', 'D'],
+                        help='include size of files per folder (unit is "B" for binary (default) or "D" for decimal)')
     parser.add_argument('-o', '--output', dest='output', default='folder-tree.puml', metavar='filename',
                         help='name of output file (default folder-tree.puml)')
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
