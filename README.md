@@ -6,4 +6,4 @@ The elements used are not configurable yet. Folders are represented by the folde
 
 Optional infomation like number or size of files in the folder can be included by using command line options of the script.
 
-`volder-visualizer -h` prints explanatory text for all options.
+`folder-visualizer -h` prints explanatory text for all options.
