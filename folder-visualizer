@@ -87,7 +87,7 @@ def main():
     parser.add_argument('-m', '--max-depth', dest='max_depth', metavar='depth', default=-1, type=int,
                         help='maximal tree depth to traverse')
     parser.add_argument('-i', '--ignore', dest='ignored_dirs', metavar='dir', action='append', default=[],
-                        help='directory to ignore in traversal (may be specified more than once)')
+                        help='ignore directory in traversal (may be specified more than once)')
     parser.add_argument('-c', '--count', dest='count', action='store_true',
                         help='include number of files per folder')
     parser.add_argument('-s', '--size', dest='size_unit', metavar='unit', nargs='?', const='B', choices=['B', 'D'],
