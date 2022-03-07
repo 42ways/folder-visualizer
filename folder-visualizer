@@ -23,6 +23,7 @@
 import argparse
 import os
 import sys
+import fnmatch
 
 def visualise_tree(args):
     with open(args.output, 'w') as output:
@@ -60,6 +61,11 @@ def sizeof_fmt(num, binary=True):
 def traverse_tree(output, args):
     for dir_path, dir_names, filenames in os.walk(args.root.rstrip(os.path.sep), followlinks=args.followlinks):
         output.write(f'folder {canonical_name(dir_path)} [\n<b>{os.path.basename(dir_path)}</b>\n')
+        if args.file_patterns:
+            new_filenames = []
+            for pattern in args.file_patterns:
+                new_filenames.extend(fnmatch.filter(filenames, pattern))
+            filenames = list(dict.fromkeys(new_filenames))
         if args.count:
             output.write(f'{len(filenames)} files\n')
         if args.size_unit:
@@ -88,6 +94,8 @@ def main():
                         help='maximal tree depth to traverse')
     parser.add_argument('-i', '--ignore', dest='ignored_dirs', metavar='dir', action='append', default=[],
                         help='ignore directory in traversal (may be specified more than once)')
+    parser.add_argument('-p', '--pattern', dest='file_patterns', metavar='pattern', action='append', default=[],
+                        help='print info only for files matching this pattern (may be specified more than once)')
     parser.add_argument('-c', '--count', dest='count', action='store_true',
                         help='include number of files per folder')
     parser.add_argument('-s', '--size', dest='size_unit', metavar='unit', nargs='?', const='B', choices=['B', 'D'],
