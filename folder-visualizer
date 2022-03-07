@@ -92,8 +92,8 @@ def main():
                         help='follow symbolic links')
     parser.add_argument('-m', '--max-depth', dest='max_depth', metavar='depth', default=-1, type=int,
                         help='maximal tree depth to traverse')
-    parser.add_argument('-i', '--ignore', dest='ignored_dirs', metavar='dir', action='append', default=[],
-                        help='ignore directory in traversal (may be specified more than once)')
+    parser.add_argument('-e', '--exclude', dest='ignored_dirs', metavar='dir', action='append', default=[],
+                        help='exclude directory in traversal (may be specified more than once)')
     parser.add_argument('-p', '--pattern', dest='file_patterns', metavar='pattern', action='append', default=[],
                         help='print info only for files matching this pattern (may be specified more than once)')
     parser.add_argument('-c', '--count', dest='count', action='store_true',
